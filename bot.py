@@ -10,11 +10,11 @@ from flask import Flask
 from threading import Thread
 
 # ================= CONFIGURATION =================
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN") or "8551871189:AAH6Dbp-PBtQtiScv58WraS3CCL_uCad7zM"
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8551871189:AAH6Dbp-PBtQtiScv58WraS3CCL_uCad7zM")
 bot = telebot.TeleBot(TOKEN)
-ADMIN_ID = 5573149859  # CHANGE TO YOUR TELEGRAM ID
+ADMIN_ID = 5573149859  # ⚠️ CHANGE TO YOUR TELEGRAM ID
 
-# CHANGE THESE TO YOUR ACTUAL CHANNEL
+# ⚠️ CHANGE THESE TO YOUR ACTUAL CHANNEL
 YOUR_CHANNEL = "@wbrand_shop"  # Your channel username
 CHANNEL_LINK = "https://t.me/wbrand_shop"  # Your channel link
 TELEBIRR_NUMBER = "0940213338"  # Your Telebirr number
@@ -27,7 +27,7 @@ PREMIUM_PRICE = 30
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
 # ================= LOGGING =================
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # ================= DATABASE =================
@@ -71,16 +71,16 @@ def update_user(user_id, **kwargs):
     conn.commit()
     conn.close()
 
-# ================= FORCE JOIN =================
+# ================= FORCE JOIN CHECK =================
 def check_membership(user_id):
+    """Check if user has joined the channel"""
     try:
         channel_clean = YOUR_CHANNEL.replace("@", "")
         member = bot.get_chat_member(f"@{channel_clean}", user_id)
         is_member = member.status in ["member", "administrator", "creator"]
-        logger.info(f"User {user_id} membership: {is_member}")
         return is_member
     except Exception as e:
-        logger.error(f"Membership check error: {e}")
+        logger.error(f"Error checking membership: {e}")
         return False
 
 # ================= START COMMAND =================
@@ -91,16 +91,22 @@ def start_command(message):
     
     create_user(user_id, username)
     
-    # CHECK IF USER JOINED
+    # CHECK IF USER JOINED CHANNEL
     if not check_membership(user_id):
-        # NOT JOINED - SHOW JOIN MESSAGE
+        # User NOT joined - SHOW JOIN MESSAGE
         join_text = f"""🚫 ACCESS REQUIRED
 
 Hello {username}!
 
 You must join our channel to use this MP3 downloader bot.
 
-Join the channel
+Channel: {YOUR_CHANNEL}
+
+Instructions:
+1. Click JOIN CHANNEL button below
+2. Join the channel
+3. Come back and click ✅ I JOINED
+4. Start downloading MP3s!"""
         
         keyboard = types.InlineKeyboardMarkup(row_width=2)
         keyboard.add(
@@ -111,7 +117,7 @@ Join the channel
         bot.send_message(message.chat.id, join_text, reply_markup=keyboard)
         return
     
-    # USER HAS JOINED
+    # User HAS joined
     update_user(user_id, joined=1)
     show_mode_menu(message)
 
@@ -151,7 +157,7 @@ Choose your access mode:
 • {FREE_DAILY_LIMIT} downloads per day
 • {FREE_WEEKLY_LIMIT} downloads per week
 • Max 15 minute audio
-• 192kbps MP3
+• 192kbps MP3 quality
 
 💎 PREMIUM MODE ({PREMIUM_PRICE} Birr/month)
 • Unlimited downloads
@@ -201,7 +207,7 @@ def handle_mode(call):
         
         if user[3] >= FREE_DAILY_LIMIT:
             bot.edit_message_text(
-                f"❌ DAILY LIMIT REACHED\n\nYou've used {FREE_DAILY_LIMIT}/{FREE_DAILY_LIMIT} downloads today.\nTry again tomorrow.",
+                f"❌ DAILY LIMIT REACHED\n\nYou've used {FREE_DAILY_LIMIT}/{FREE_DAILY_LIMIT} downloads today.\nTry again tomorrow or upgrade.",
                 call.message.chat.id,
                 call.message.message_id
             )
@@ -209,7 +215,7 @@ def handle_mode(call):
         
         if user[4] >= FREE_WEEKLY_LIMIT:
             bot.edit_message_text(
-                f"❌ WEEKLY LIMIT REACHED\n\nYou've used {FREE_WEEKLY_LIMIT}/{FREE_WEEKLY_LIMIT} downloads this week.\nTry again next week.",
+                f"❌ WEEKLY LIMIT REACHED\n\nYou've used {FREE_WEEKLY_LIMIT}/{FREE_WEEKLY_LIMIT} downloads this week.\nTry again next week or upgrade.",
                 call.message.chat.id,
                 call.message.message_id
             )
@@ -270,7 +276,7 @@ Admin will verify within 24 hours."""
                 reply_markup=keyboard
             )
 
-# ================= PAYMENT =================
+# ================= PAYMENT HANDLING =================
 @bot.callback_query_handler(func=lambda call: call.data == "i_paid")
 def handle_payment(call):
     bot.edit_message_text(
@@ -294,13 +300,15 @@ def process_payment(message):
             with open(path, 'wb') as f:
                 f.write(downloaded_file)
             
-            bot.reply_to(message, "✅ Payment received! Admin will verify.")
+            bot.reply_to(message, "✅ Payment received! Admin will verify within 24 hours.")
             
             # Notify admin
-            admin_text = f"""NEW PAYMENT
-User: @{message.from_user.username}
+            admin_text = f"""🤑 NEW PAYMENT REQUEST
+
+User: @{message.from_user.username or 'No username'}
 ID: {user_id}
-Amount: {PREMIUM_PRICE} Birr"""
+Amount: {PREMIUM_PRICE} Birr
+Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"""
             
             keyboard = types.InlineKeyboardMarkup(row_width=2)
             keyboard.add(
@@ -319,6 +327,7 @@ Amount: {PREMIUM_PRICE} Birr"""
 @bot.callback_query_handler(func=lambda call: call.data.startswith(("approve_", "reject_")))
 def admin_action(call):
     if call.from_user.id != ADMIN_ID:
+        bot.answer_callback_query(call.id, "You are not admin!")
         return
     
     action, user_id = call.data.split("_")
@@ -329,40 +338,40 @@ def admin_action(call):
         update_user(user_id, premium=1, premium_expiry=expiry)
         
         try:
-            bot.send_message(user_id, f"✅ PREMIUM ACTIVATED!\n\nExpires: {expiry}\n\nEnjoy! 🎵")
-        except:
-            pass
+            bot.send_message(user_id, f"✅ PREMIUM ACTIVATED!\n\nYour premium is active for 30 days (until {expiry}).\n\nEnjoy unlimited downloads! 🎵")
+        except Exception as e:
+            logger.error(f"Error notifying user: {e}")
         
         bot.edit_message_text(
-            f"✅ Premium activated for {user_id}",
+            f"✅ Premium activated for user {user_id}",
             call.message.chat.id,
             call.message.message_id
         )
     
     elif action == "reject":
         try:
-            bot.send_message(user_id, "❌ Payment rejected. Contact support.")
+            bot.send_message(user_id, "❌ Your payment was rejected. Please contact support.")
         except:
             pass
         
         bot.edit_message_text(
-            f"❌ Payment rejected for {user_id}",
+            f"❌ Payment rejected for user {user_id}",
             call.message.chat.id,
             call.message.message_id
         )
 
-# ================= DOWNLOAD =================
+# ================= DOWNLOAD HANDLER =================
 @bot.message_handler(func=lambda m: "youtu" in m.text.lower())
 def handle_link(message):
     user_id = message.from_user.id
     
     if not check_membership(user_id):
-        bot.reply_to(message, f"❌ Join {YOUR_CHANNEL} first!")
+        bot.reply_to(message, f"❌ Join {YOUR_CHANNEL} first using /start")
         return
     
     user = get_user(user_id)
     if not user:
-        bot.reply_to(message, "Use /start first")
+        bot.reply_to(message, "Please use /start first")
         return
     
     url = message.text.strip()
@@ -377,11 +386,11 @@ def handle_link(message):
             user = get_user(user_id)
         
         if user[3] >= FREE_DAILY_LIMIT:
-            bot.reply_to(message, f"❌ Daily limit reached ({FREE_DAILY_LIMIT}/{FREE_DAILY_LIMIT}).")
+            bot.reply_to(message, f"❌ Daily limit reached ({FREE_DAILY_LIMIT}/{FREE_DAILY_LIMIT}). Try tomorrow or upgrade.")
             return
         
         if user[4] >= FREE_WEEKLY_LIMIT:
-            bot.reply_to(message, f"❌ Weekly limit reached ({FREE_WEEKLY_LIMIT}/{FREE_WEEKLY_LIMIT}).")
+            bot.reply_to(message, f"❌ Weekly limit reached ({FREE_WEEKLY_LIMIT}/{FREE_WEEKLY_LIMIT}). Try next week or upgrade.")
             return
         
         download_audio(message, url, False)
@@ -390,17 +399,23 @@ def download_audio(message, url, is_premium):
     user_id = message.from_user.id
     
     try:
-        status = bot.reply_to(message, "⏳ Processing...")
+        status = bot.reply_to(message, "⏳ Processing your audio download...")
         bot.send_chat_action(message.chat.id, 'upload_audio')
         
         if not is_premium:
             with YoutubeDL({'quiet': True}) as ydl:
                 info = ydl.extract_info(url, download=False)
-                if info.get('duration', 0) > 900:
-                    bot.edit_message_text("❌ Audio too long (max 15 minutes).", message.chat.id, status.message_id)
+                duration = info.get('duration', 0)
+                if duration > 900:  # 15 minutes
+                    bot.edit_message_text(
+                        "❌ Audio too long for free users (max 15 minutes).",
+                        message.chat.id,
+                        status.message_id
+                    )
                     return
         
-        opts = {
+        # Download options
+        ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
             'quiet': True,
@@ -411,15 +426,18 @@ def download_audio(message, url, is_premium):
             }],
         }
         
-        with YoutubeDL(opts) as ydl:
+        # Download audio
+        with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
             filename = filename.rsplit('.', 1)[0] + '.mp3'
         
+        # Send audio file
         with open(filename, 'rb') as f:
             title = info.get('title', 'Audio')[:64]
-            bot.send_audio(message.chat.id, f, title=title, timeout=100)
+            bot.send_audio(message.chat.id, f, title=title, performer="YouTube", timeout=100)
         
+        # Update usage for free users
         if not is_premium:
             user = get_user(user_id)
             new_daily = user[3] + 1
@@ -430,14 +448,18 @@ def download_audio(message, url, is_premium):
             remaining_weekly = FREE_WEEKLY_LIMIT - new_weekly
             
             bot.edit_message_text(
-                f"✅ Downloaded!\nToday: {remaining_daily}/{FREE_DAILY_LIMIT} left\nWeek: {remaining_weekly}/{FREE_WEEKLY_LIMIT} left",
+                f"✅ MP3 downloaded!\n\nToday: {remaining_daily}/{FREE_DAILY_LIMIT} remaining\nWeek: {remaining_weekly}/{FREE_WEEKLY_LIMIT} remaining",
                 message.chat.id,
                 status.message_id
             )
         else:
-            bot.edit_message_text("✅ Downloaded! 🎧", message.chat.id, status.message_id)
+            bot.edit_message_text(
+                "✅ Premium MP3 downloaded! 🎧",
+                message.chat.id,
+                status.message_id
+            )
         
-        # Cleanup
+        # Cleanup file after 30 minutes
         def delete_file():
             time.sleep(1800)
             if os.path.exists(filename):
@@ -449,76 +471,86 @@ def download_audio(message, url, is_premium):
         logger.error(f"Download error: {e}")
         bot.reply_to(message, f"❌ Error: {str(e)[:100]}")
 
-# ================= OTHER COMMANDS =================
+# ================= HELP COMMAND =================
 @bot.message_handler(commands=['help'])
 def help_command(message):
-    text = f"""HELP GUIDE
+    text = f"""📚 HELP GUIDE
 
 Commands:
-/start - Start bot
-/help - This help
-/status - Your status
+/start - Start the bot
+/help - Show this help
+/status - Check your status
 
 How to use:
-1. Join {YOUR_CHANNEL}
-2. Choose mode
-3. Send YouTube link
-4. Get MP3
+1. Join {YOUR_CHANNEL} (required)
+2. Choose Free or Premium mode
+3. Send any YouTube link
+4. Get MP3 audio file
 
-Free limits:
-• {FREE_DAILY_LIMIT} per day
-• {FREE_WEEKLY_LIMIT} per week
-• Max 15 minutes
+Free Mode Limits:
+• {FREE_DAILY_LIMIT} downloads per day
+• {FREE_WEEKLY_LIMIT} downloads per week
+• Max 15 minute audio
 
-Premium ({PREMIUM_PRICE} Birr):
-• Unlimited
-• No limits"""
+Premium ({PREMIUM_PRICE} Birr/month):
+• Unlimited downloads
+• No time limits
+• Best quality
+
+Need help? Contact admin."""
     
     bot.reply_to(message, text)
 
+# ================= STATUS COMMAND =================
 @bot.message_handler(commands=['status'])
 def status_command(message):
     user_id = message.from_user.id
     user = get_user(user_id)
     
     if not user:
-        bot.reply_to(message, "Use /start first")
+        bot.reply_to(message, "Please use /start first")
         return
     
-    premium = "✅ Active" if user[6] == 1 else "❌ Inactive"
+    premium_status = "✅ Active" if user[6] == 1 else "❌ Inactive"
     expiry = user[7] or "N/A"
     
-    text = f"""YOUR STATUS
+    text = f"""📊 YOUR STATUS
 
-Premium: {premium}
+Premium: {premium_status}
 Expiry: {expiry}
 
-Today: {user[3]}/{FREE_DAILY_LIMIT}
-Week: {user[4]}/{FREE_WEEKLY_LIMIT}"""
+Downloads today: {user[3]}/{FREE_DAILY_LIMIT}
+Downloads this week: {user[4]}/{FREE_WEEKLY_LIMIT}"""
     
     bot.reply_to(message, text)
 
-# ================= FLASK =================
+# ================= FLASK SERVER =================
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot is running"
+    return "✅ YouTube MP3 Downloader Bot is running!"
 
 def run_flask():
     app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
 
 # ================= MAIN =================
 if __name__ == '__main__':
-    logger.info("Starting bot...")
+    logger.info("=" * 50)
+    logger.info("Starting YouTube MP3 Downloader Bot...")
     logger.info(f"Channel: {YOUR_CHANNEL}")
+    logger.info(f"Admin ID: {ADMIN_ID}")
+    logger.info(f"Telebirr: {TELEBIRR_NUMBER}")
+    logger.info("=" * 50)
     
+    # Start Flask server in background
     flask_thread = Thread(target=run_flask, daemon=True)
     flask_thread.start()
     
+    # Start bot polling
     try:
-        bot.infinity_polling(timeout=60)
+        bot.infinity_polling(timeout=60, long_polling_timeout=60)
     except Exception as e:
         logger.error(f"Bot error: {e}")
         time.sleep(5)
-        bot.infinity_polling(timeout=60)
+        bot.infinity_polling(timeout=60, long_polling_timeout=60)
