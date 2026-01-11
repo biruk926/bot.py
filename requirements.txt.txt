@@ -1,0 +1,4 @@
+requests
+pytube
+ffmpeg-python
+flask

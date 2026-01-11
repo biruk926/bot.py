@@ -1,0 +1,232 @@
+2026-01-11 19:26:03,314 - __main__ - INFO - Database initialized
+2026-01-11 19:26:03,317 - __main__ - INFO - Starting YouTube Downloader Bot...
+2026-01-11 19:26:03,335 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.100:8080
+2026-01-11 19:26:03,337 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-01-11 19:29:47,190 - __main__ - ERROR - Error checking channel join for 5573149859: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:29:54,060 - __main__ - INFO - Created/updated user 5573149859
+2026-01-11 19:29:54,253 - __main__ - ERROR - Error checking channel join for 5573149859: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:29:54,477 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+2026-01-11 19:29:54,483 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 97, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 10134, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "C:\Users\bwerk\OneDrive\Documents\BOT folder\bot.py", line 316, in start
+    bot.send_message(
+    ~~~~~~~~~~~~~~~~^
+        message.chat.id,
+        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        parse_mode="Markdown"
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1811, in send_message
+    apihelper.send_message(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        self.token, chat_id, text,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        suggested_post_parameters=suggested_post_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 282, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 197, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+
+2026-01-11 19:30:05,120 - __main__ - INFO - Created/updated user 5573149859
+2026-01-11 19:30:05,413 - __main__ - ERROR - Error checking channel join for 5573149859: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:30:05,621 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+2026-01-11 19:30:05,625 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 97, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 10134, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "C:\Users\bwerk\OneDrive\Documents\BOT folder\bot.py", line 316, in start
+    bot.send_message(
+    ~~~~~~~~~~~~~~~~^
+        message.chat.id,
+        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        parse_mode="Markdown"
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1811, in send_message
+    apihelper.send_message(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        self.token, chat_id, text,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        suggested_post_parameters=suggested_post_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 282, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 197, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+
+2026-01-11 19:48:05,299 - __main__ - ERROR - Error checking channel join for 5573149859: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:48:12,207 - __main__ - INFO - Created/updated user 5573149859
+2026-01-11 19:48:12,372 - __main__ - ERROR - Error checking channel join for 5573149859: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:48:12,560 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+2026-01-11 19:48:12,568 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 97, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 10134, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "C:\Users\bwerk\OneDrive\Documents\BOT folder\bot.py", line 316, in start
+        bot.reply_to(message, "Please use /start first")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    status_text = f"""📊 *Your Status*
+    ^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1811, in send_message
+    apihelper.send_message(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        self.token, chat_id, text,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        suggested_post_parameters=suggested_post_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 282, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 197, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+
+2026-01-11 19:48:50,756 - __main__ - INFO - Created/updated user 7076963693
+2026-01-11 19:48:52,020 - __main__ - ERROR - Error checking channel join for 7076963693: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:48:52,231 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+2026-01-11 19:48:52,235 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 97, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 10134, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "C:\Users\bwerk\OneDrive\Documents\BOT folder\bot.py", line 316, in start
+        bot.reply_to(message, "Please use /start first")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    status_text = f"""📊 *Your Status*
+    ^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1811, in send_message
+    apihelper.send_message(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        self.token, chat_id, text,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        suggested_post_parameters=suggested_post_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 282, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 197, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+
+2026-01-11 19:49:13,801 - __main__ - INFO - Created/updated user 7076963693
+2026-01-11 19:49:13,953 - __main__ - ERROR - Error checking channel join for 7076963693: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 19:49:14,134 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+2026-01-11 19:49:14,141 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 154, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\util.py", line 97, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 10134, in _run_middlewares_and_handler
+    result = handler['function'](message)
+  File "C:\Users\bwerk\OneDrive\Documents\BOT folder\bot.py", line 316, in start
+        bot.reply_to(message, "Please use /start first")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    status_text = f"""📊 *Your Status*
+    ^^^^^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\__init__.py", line 1811, in send_message
+    apihelper.send_message(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        self.token, chat_id, text,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        suggested_post_parameters=suggested_post_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 282, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\bwerk\AppData\Local\Programs\Python\Python313\Lib\site-packages\telebot\apihelper.py", line 197, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 56
+
+2026-01-11 20:21:29,979 - __main__ - INFO - Database initialized
+2026-01-11 20:21:29,982 - __main__ - INFO - Starting YouTube MP3 Downloader Bot...
+2026-01-11 20:21:30,002 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.100:8080
+2026-01-11 20:21:30,003 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-01-11 20:21:33,091 - __main__ - ERROR - Error checking channel join: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 20:21:33,398 - __main__ - ERROR - Error sending join message: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 107
+2026-01-11 20:21:38,108 - __main__ - ERROR - Error checking channel join: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 20:21:38,311 - __main__ - ERROR - Error sending join message: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 107
+2026-01-11 20:22:22,141 - __main__ - ERROR - Error checking channel join: type object 'datetime.datetime' has no attribute 'datetime'
+2026-01-11 20:22:22,344 - __main__ - ERROR - Error sending join message: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 107
+2026-01-11 20:29:00,568 - __main__ - INFO - Database initialized
+2026-01-11 20:29:00,570 - __main__ - INFO - Starting YouTube MP3 Downloader Bot...
+2026-01-11 20:29:00,584 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.100:8080
+2026-01-11 20:29:00,584 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
